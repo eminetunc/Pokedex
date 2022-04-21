@@ -11,6 +11,7 @@ pokemonNameList= []
 for name in pokemonNameRes["results"]:
     pokemonNameList.append(name["name"])
 
+#This is a comment.
 #Pokemon Class
 class Pokemon: 
     def __init__(poke, id, name, height, abilities, species, types):
