@@ -4,7 +4,7 @@ import json
 pokemonNum= requests.get("https://pokeapi.co/api/v2/pokemon-species")
 pokemonNumStr= str(pokemonNum.json()['count']) 
 
-pokemonName= requests.get("https://pokeapi.co/api/v2/pokemon-species/?offset=0&limit=") #limiting to get all names 0-20
+pokemonName= requests.get("https://pokeapi.co/api/v2/pokemon-species/?offset=0&limit="+pokemonNumStr) #limiting to get all names based on the number of names there are
 pokemonNameRes= pokemonName.json()
 
 pokemonNameList= []
