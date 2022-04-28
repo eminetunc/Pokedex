@@ -24,7 +24,7 @@ input.pack()
 
 def search():
     display.delete("1", END) #Will delete anything entered in the box that will display the output
-    pokemon= input.get()
+    pokemon= PokeapiClient.getData(input.get())
     try:
         pass
     except AttributeError:
