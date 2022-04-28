@@ -38,6 +38,7 @@ display.pack()
 
 root.mainloop()
 
+#
 #Pokemon class storing details
 class Pokemon: 
     def __init__(self, id, name, weight, height, abilities, species, types, defense):
