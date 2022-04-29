@@ -15,8 +15,9 @@ for name in pokemonNameRes["results"]:
 #Implementing UI
 root = Tk()
 root.title("Pokedex")
-
-label = Label(root, text = "Enter the name of your pokemon: ", fg="red")
+root.geometry("600x700")
+root.configure(background='blue')
+label = Label(root, text = "Enter the name of your pokemon: ", fg="red", pady=20)
 label.pack()
 
 input = Entry(root)
@@ -30,13 +31,11 @@ def search():
     except AttributeError:
         display.insert(END, "Please enter a pokemon.")
     
-button = Button(root, text="Submit", fg="red", bg="yellow")
+button = Button(root, text="Submit", fg="red", bg="yellow", command=search)
 button.pack()
 
 display= Text(root)
 display.pack()
-
-root.mainloop()
 
 #Pokemon class storing details
 class Pokemon: 
@@ -62,6 +61,8 @@ class PokeapiClient:
 
     def getData(self, species):
         return requests.get(self.api_base + '/pokemon_species/' + str(species) + '/').json()
+    
+root.mainloop()
 
 # sample usage:
 #pokedex = PokeapiClient('https://pokeapi.co/api/v2')
