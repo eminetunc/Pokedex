@@ -1,33 +1,46 @@
 import requests
 import json
 from tkinter import *
-
-pokemonNum = requests.get("https://pokeapi.co/api/v2/pokemon-species")
-pokemonNumStr = str(pokemonNum.json()['count']) 
-
-pokemonName = requests.get("https://pokeapi.co/api/v2/pokemon-species/?offset=0&limit="+pokemonNumStr) #limiting to get all names based on the number of names there are
-pokemonNameRes = pokemonName.json()
-
-pokemonNameList = []
-for name in pokemonNameRes["results"]:
-    pokemonNameList.append(name["name"])
+import pokemon2
+#import pokebase as pb
 
 #Implementing UI
+#UI display
 root = Tk()
 root.title("Pokedex")
 root.geometry("600x700")
-root.configure(background='blue')
 label = Label(root, text = "Enter the name of your pokemon: ", fg="red", pady=20)
 label.pack()
 
+#getting 
+def printValue():
+    pname = input.get()
+    
 input = Entry(root)
 input.pack()
 
 def search():
-    display.delete("1", END) #Will delete anything entered in the box that will display the output
-    pokemon= PokeapiClient.getData(input.get())
+    display.delete("1.0", END) #Will delete anything entered in the box that will display the output
+    #pokemon= PokeapiClient.getData(input.get())
+    pokemon = pokemon.pokemon(printValue)
     try:
-        pass
+        response = requests.get(pokemon.sprites.front_default)
+        abilities = " "
+        types = " "
+        for ability in pokemon.abilities: 
+            abilities += ability.ability.name
+        for poketype in pokemon.types: 
+            types += poketype.type.name
+        info = f"""{input.get().capitalize()}
+        Abilities: {pokemon.abilities}
+        Height: {pokemon.height}
+        ID: {pokemon.id}
+        Species: {pokemon.species}
+        Types: {pokemon.types}
+        Weight: {pokemon.weight}
+        """
+        display.insert(END, info)
+          
     except AttributeError:
         display.insert(END, "Please enter a pokemon.")
     
@@ -37,33 +50,4 @@ button.pack()
 display= Text(root)
 display.pack()
 
-#Pokemon class storing details
-class Pokemon: 
-    def __init__(self, id, name, weight, height, abilities, species, types, defense):
-        self.id = id 
-        self.name = name
-        self.weight = weight
-        self.height = height
-        self.abilities = abilities
-        self.species = species
-        self.types = types
-        self.defense = defense
-        
-'''
-def nameId(uInput):
-    request = requests.get("https://pokeapi.co/api/v2/pokemon-species/"+str(uInput)+"/")
-    json = request.json()
-'''
-    
-class PokeapiClient:
-    def __init__(self, api_base):
-        self.api_base = api_base
-
-    def getData(self, species):
-        return requests.get(self.api_base + '/pokemon_species/' + str(species) + '/').json()
-    
 root.mainloop()
-
-# sample usage:
-#pokedex = PokeapiClient('https://pokeapi.co/api/v2')
-#print(pokedex.getData('pikachu'))
