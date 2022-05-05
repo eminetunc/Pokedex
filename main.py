@@ -14,7 +14,7 @@ label.pack()
 
 #getting 
 def printValue():
-    pname = input.get()
+    return input.get()
     
 input = Entry(root)
 input.pack()
@@ -22,27 +22,23 @@ input.pack()
 def search():
     display.delete("1.0", END) #Will delete anything entered in the box that will display the output
     #pokemon= PokeapiClient.getData(input.get())
-    pokemon = pokemon.pokemon(printValue)
-    try:
-        response = requests.get(pokemon.sprites.front_default)
-        abilities = " "
-        types = " "
-        for ability in pokemon.abilities: 
-            abilities += ability.ability.name
-        for poketype in pokemon.types: 
-            types += poketype.type.name
-        info = f"""{input.get().capitalize()}
-        Abilities: {pokemon.abilities}
-        Height: {pokemon.height}
-        ID: {pokemon.id}
-        Species: {pokemon.species}
-        Types: {pokemon.types}
-        Weight: {pokemon.weight}
-        """
-        display.insert(END, info)
-          
-    except AttributeError:
-        display.insert(END, "Please enter a pokemon.")
+    pokemon_object = pokemon2.pokemon(printValue())
+    
+    #response = requests.get(pokemon_object)
+    abilities = " "
+    types = " "
+    for ability in pokemon_object.abilities: 
+        abilities += ability["ability"]["name"]
+    for poketype in pokemon_object.types: 
+        types += poketype["type"]["name"]
+    info = f"""{input.get().capitalize()}
+    Abilities: {pokemon_object.abilities}
+    Height: {pokemon_object.height}
+    Species: {pokemon_object.species}
+    Types: {pokemon_object.types}
+    Weight: {pokemon_object.weight}
+    """
+    display.insert(END, info)
     
 button = Button(root, text="Submit", fg="red", bg="yellow", command=search)
 button.pack()
