@@ -8,7 +8,7 @@ import pokemon2
 #UI display
 root = Tk()
 root.title("Pokedex")
-root.geometry("600x700")
+root.geometry("700x700")
 label = Label(root, text = "Enter the name of your pokemon: ", fg="red", pady=20)
 label.pack()
 
@@ -27,20 +27,23 @@ def search():
     #response = requests.get(pokemon_object)
     abilities = " "
     types = " "
+    
     for ability in pokemon_object.abilities: 
         abilities += ability["ability"]["name"]
+        #print(ability["ability"]["name"])
+    
     for poketype in pokemon_object.types: 
         types += poketype["type"]["name"]
+        
     info = f"""{input.get().capitalize()}
-    Abilities: {pokemon_object.abilities}
+    Abilities: {ability["ability"]["name"]}
     Height: {pokemon_object.height}
-    Species: {pokemon_object.species}
-    Types: {pokemon_object.types}
+    Types: {poketype["type"]["name"]}
     Weight: {pokemon_object.weight}
     """
     display.insert(END, info)
     
-button = Button(root, text="Submit", fg="red", bg="yellow", command=search)
+button = Button(root, text="Submit", fg="red", command=search)
 button.pack()
 
 display= Text(root)
