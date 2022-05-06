@@ -1,31 +1,46 @@
-import requests
-import json
+import pokemon
+from tkinter import *
 
-pokemonNum= requests.get("https://pokeapi.co/api/v2/pokemon-species")
-pokemonNumStr= str(pokemonNum.json()['count']) 
+# UI display
+root = Tk()
+root.title("Pokedex")
+root.geometry("700x700")
+label = Label(root, text = "Enter the name of your pokemon: ", fg = "red", pady = 20)
+label.pack()
 
-pokemonName= requests.get("https://pokeapi.co/api/v2/pokemon-species/?offset=0&limit="+pokemonNumStr) #limiting to get all names based on the number of names there are
-pokemonNameRes= pokemonName.json()
-
-pokemonNameList= []
-for name in pokemonNameRes["results"]:
-    pokemonNameList.append(name["name"])
-
-#This is a comment.
-#Pokemon Class
-class Pokemon: 
-    def __init__(poke, id, name, height, abilities, species, types):
-        poke.id = id 
-        #poke.id = requests.get("https://pokeapi.co/api/v2/pokemon/")
-        poke.name = name
-        poke.height = height
-        poke.abilities = abilities
-        poke.species = species
-        poke.types = types
+# Getting input
+def printValue():
+    return input.get()
     
-#class Pokedex:
-#    def __init__():
+input = Entry(root)
+input.pack()
+
+def search():
+    # Will delete anything entered in the box that will display the output
+    display.delete("1.0", END)
+    pokemon_object = pokemon.Pokemon(printValue())
+    
+    abilities = " "
+    types = " "
+    
+    for ability in pokemon_object.abilities: 
+        abilities += ability["ability"]["name"]
+    
+    for poketype in pokemon_object.types: 
+        types += poketype["type"]["name"]
         
-def nameId(uInput):
-    request=requests.get("https://pokeapi.co/api/v2/pokemon-species/"+str(uInput)+"/")
-    json=request.json()
+    info = f"""{input.get().capitalize()}
+    Abilities: {ability["ability"]["name"]}
+    Height: {pokemon_object.height}
+    Types: {poketype["type"]["name"]}
+    Weight: {pokemon_object.weight}
+    """
+    display.insert(END, info)
+    
+button = Button(root, text = "Submit", fg = "red", command = search)
+button.pack()
+
+display = Text(root)
+display.pack()
+
+root.mainloop()
